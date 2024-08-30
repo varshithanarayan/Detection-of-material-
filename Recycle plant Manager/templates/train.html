@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Garbage Classification</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+
+
+<link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='lib/twentytwenty/twentytwenty.css') }}" rel="stylesheet" />
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-dark m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-secondary m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Topbar Start -->
+
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm px-5 py-3 py-lg-0">
+        <a href="#" class="navbar-brand p-0">
+            <h1 class="m-0 text-primary"><i class="fa fa-dumpster me-2"></i>Recycle Plant Manager</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="#" class="nav-item nav-link">View this in your mobile on <b>{{url}}</b></a>
+                <a href="#" class="nav-item nav-link active">Logged in : <b>{{data}}</b></a>
+            </div>
+            
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Full Screen Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content" style="background: rgba(9, 30, 62, .8);">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <div class="input-group" style="max-width: 600px;">
+                        <input type="text" class="form-control bg-transparent border-primary p-3" placeholder="Type search keyword">
+                        <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="container-fluid bg-primary py-5 hero-header mb-5">
+        <div class="row py-3">
+            <div class="col-12 text-center">
+                <h1 class="display-3 text-white animated zoomIn">Recycle Plant Manager - Training</h1>
+            </div>
+        </div>
+    </div>
+ <div class="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-8">
+                    <div class="section-title mb-4">
+                        <h5 class="position-relative d-inline-block text-primary text-uppercase">Training</h5>
+                        <h1 class="display-5 mb-0">Train all the Modules with the dataset</h1>
+                    </div>
+                    <p class="mb-4">Use this tool to perform Training of the Model to classify garbage from digital images with Alexnet, Resnet, DenseNet and VGG16 models.</p>
+                    <h5 class="text-uppercase text-primary wow fadeInUp" data-wow-delay="0.3s">Upload Dataset and Train the Garbage Classification Model</h5>
+                   
+                </div>
+              
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+        $('#showOutput').click(function() {
+            $('#showOutput').fadeOut(500);
+            $('#inputImage').fadeOut(500);
+            $('#loadingSpinner').show();
+            $.ajax({
+                url: '/get_image',
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(blob) {
+                    var url = URL.createObjectURL(blob);
+                    $('#loadingSpinner').hide();
+                    $('#imageContainer').html('<img src="' + url + '" alt="Output" data-wow-delay="0.5s">');
+                    $('#output_text').html('<h1 class="display-5 mb-5">Your Output</h1>')
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showDataset').click(function() {
+            $('#loadingSpinnerdataset').show();
+            $('#showDataset').fadeOut(0.5);
+            $.ajax({
+                url: '/get_dataset',
+                type: 'GET',
+                success: function(response) {
+                    var data = response;
+                    $('#loadingSpinnerdataset').hide();
+                    $('#datasetContainer').html('<p  class="mb-4">'  + data + '</p');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showTrain').click(function() {
+            $('#loadingSpinnertrain').show();
+            $('#showTrain').fadeOut(0.5);
+            $.ajax({
+                url: '/start_training',
+                type: 'GET',
+                success: function(response) {
+                    var data = response;
+                    $('#loadingSpinnertrain').hide();
+                    $('#trainContainer').html('<p  class="mb-4">'  + data + '</p');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showModel').click(function() {
+            $('#loadingSpinnermodel').show();
+            $('#showModel').fadeOut(0.5);
+            $.ajax({
+                url: '/save_model',
+                type: 'GET',
+                success: function(response) {
+                    var data = response;
+                    $('#loadingSpinnermodel').hide();
+                    $('#modelContainer').html('<p  class="mb-4">'  + data + '</p');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showAccuracy').click(function() {
+            $('#showAccuracy').fadeOut(500);
+            $('#loadingSpinneraccuracy').show();
+            $.ajax({
+                url: '/show_accuracy',
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(blob) {
+                    var url = URL.createObjectURL(blob);
+                    $('#loadingSpinneraccuracy').hide();
+                    $('#accuracyContainer').html('<img class="img-fluid" src="' + url + '"alt="">');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showLoss').click(function() {
+            $('#showLoss').fadeOut(500);
+            $('#loadingSpinnerloss').show();
+            $.ajax({
+                url: '/show_loss',
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(blob) {
+                    var url = URL.createObjectURL(blob);
+                    $('#loadingSpinnerloss').hide();
+                    $('#lossContainer').html('<img class="img-fluid" src="' + url + '"alt="">');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        $(document).ready(function() {
+        $('#showMemo').click(function() {
+            const textInput = document.getElementById('memo');
+            const inputValue = textInput.value;
+            $('#loadingSpinnermemo').show();
+            $('#showMemo').fadeOut(0.5);
+            $.ajax({
+                url: '/save_memo',
+                type: 'POST',
+                body: JSON.stringify({ memo: inputValue }),
+                success: function(response) {
+                    var data = response;
+                    $('#loadingSpinnermemo').hide();
+                    $('#memoContainer').html('<p  class="mb-4">'  + data + '</p');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+        <!-- Projects Start -->
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                    <h1 class="display-5 mb-5">Start Training With Dataset</h1>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item rounded d-flex h-100">
+                            <div class="service-text rounded p-5">
+                                <div class="btn-square rounded-circle mx-auto mb-3">
+                                    <img class="img-fluid" src="{{ url_for('static', filename = 'img/icon/icon-3.png')}}" alt="Icon">
+                                </div>
+                                <h4 class="mb-3">Dataset</h4>
+                                <p  class="mb-4">Kinldy copy your dataset to the folder "Dataset" in your project directory with train and test folders</p>
+                                <div id="datasetContainer">No data found yet</div>
+                                <div id="loadingSpinnerdataset" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                
+                                <button id="showDataset" class="btn btn-sm" ><i class="fa fa-plus text-primary me-2"></i>Upload</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="service-item rounded d-flex h-100">
+    
+                            <div class="service-text rounded p-5">
+                                <div class="btn-square rounded-circle mx-auto mb-3">
+                                    <img class="img-fluid" src="{{ url_for('static', filename = 'img/icon/icon-6.png')}}" alt="Icon">
+                                </div>
+                                <h4 class="mb-3">Train The dataset</h4>
+                                <p class="mb-4">Apply Alexnet, Resnet, DenseNet and VGG16 methods to train the system with the dataset. Approximate Training time - <b>39 Hours</b></p>
+                                <div id="trainContainer">Skip This step if Already Trained</div>
+                                <div id="loadingSpinnertrain" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                
+                                <button id="showTrain" class="btn btn-sm" ><i class="fa fa-plus text-primary me-2"></i>Train</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="service-item rounded d-flex h-100">
+                            <div class="service-text rounded p-5">
+                                <div class="btn-square rounded-circle mx-auto mb-3">
+                                    <img class="img-fluid" src="{{ url_for('static', filename = 'img/icon/icon-9.png')}}" alt="Icon">
+                                </div>
+                                <h4 class="mb-3">Generate Models</h4>
+                                <p class = "md-4">Save the trained models in the previous step</p>
+                                <div id="modelContainer"></div>
+                                <div id="loadingSpinnermodel" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                <button id="showModel" class="btn btn-sm" ><i class="fa fa-plus text-primary me-2" style="color:white;"></i>Save</button>
+                        </div>
+                    </div>
+                    </div>
+    
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div id="accuracyContainer" class="service-item rounded d-flex h-100">
+                            <div id="loadingSpinneraccuracy" class="spinner-border text-primary" role="status" style="display: none;">
+                                <span class="sr-only">Loading...</span></div>
+                            
+                            <div class="service-text rounded p-5">
+                                <div class="btn-square rounded-circle mx-auto mb-3">
+                                    <img class="img-fluid" src="{{ url_for('static', filename = 'img/icon/icon-7.png')}}" alt="Icon">
+                                </div>
+                                <h4 class="mb-3">Show Accuracy </h4>
+                                <p class="mb-4">View accuracy plot of the data models Saved in previous step</p>
+                                <button id="showAccuracy" class="btn btn-sm" ><i class="fa fa-plus text-primary me-2"></i>Accuracy</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div id="lossContainer" class="service-item rounded d-flex h-100">
+                            <div id="loadingSpinnerloss" class="spinner-border text-primary" role="status" style="display: none;">
+                                <span class="sr-only">Loading...</span></div>
+                            
+                            <div class="service-text rounded p-5">
+                                <div class="btn-square rounded-circle mx-auto mb-3">
+                                    <img class="img-fluid" src="{{ url_for('static', filename = 'img/icon/icon-7.png')}}" alt="Icon">
+                                </div>
+                                <h4 class="mb-3">Show Loss </h4>
+                                <p class="mb-4">View Loss vs Epoch plot of the data models Saved in previous step</p>
+                                <button id="showLoss" class="btn btn-sm" ><i class="fa fa-plus text-primary me-2"></i>Loss</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+
+     <div class="container-fluid text-light py-4" style="background: #051225;">
+        <div class="container">
+            <div class="row g-0">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-md-0">&copy; <a class="text-white border-bottom" href="#">Garbage Classification</a>. All Rights Reserved.</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/moment-timezone.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/twentytwenty/jquery.event.move.js')}}"></script>
+    <script src="{{ url_for('static', filename='lib/twentytwenty/jquery.twentytwenty.js')}}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+</body>
+
+</html>
